@@ -1,17 +1,22 @@
-#Features
+# Features
 
 -搜尋各家餐廳的基本資料
 
 -想吃特定種類餐點時可以搜尋推薦的餐廳
 
-#Environment
+
+
+# Environment
+
 -Node.js @14.16.0
 
 -Express @4.16.4
 
 -Express-Handlebars @3.0.0
 
-#Install
+
+
+# Install
 
 1.開啟Terminal複製此檔案
 
