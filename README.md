@@ -9,7 +9,7 @@
 
 #Install
 1.開啟Terminal複製此檔案
-git clone https://github.com/Eason0in/Restaurant-CRUD.git
+git clone https://github.com/weitungstyle/restaurant_list
 
 2.切換至專案資料夾
 cd restaurant_list
