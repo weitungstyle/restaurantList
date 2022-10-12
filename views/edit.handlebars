@@ -1,0 +1,13 @@
+<form action="/restaurants/{{ restaurant._id }}/edit" method="POST">
+  <input type="text" placeholder="name" name="name" value="{{ restaurant.name }}"></input>
+  <input type="text" placeholder="name_en" name="name_en" value="{{ restaurant.name_en }}"></input>
+  <input type="text" placeholder="category" name="category" value="{{ restaurant.category }}"></input>
+  <input type="text" placeholder="image" name="image" value="{{ restaurant.image }}"></input>
+  <input type="text" placeholder="location" name="location" value="{{ restaurant.location }}"></input>
+  <input type="text" placeholder="phone" name="phone" value="{{ restaurant.phone }}"></input>
+  <input type="text" placeholder="google_map" name="google_map" value="{{ restaurant.google_map }}"></input>
+  <input type="number" placeholder="rating" name="rating" value="{{ restaurant.rating }}"></input>
+  <input type="text" placeholder="description" name="description" value="{{ restaurant.description }}"></input>
+  <button type="submit">Save</button>
+  <a href="/">back</a>
+</form>
