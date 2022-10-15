@@ -1,23 +1,48 @@
+<!-- create btn -->
+<a href="./restaurants/new" class="btn btn-primary create-btn">Create</a>
+
 <!-- search bar -->
-<div class="container search-bar">
-  <div class="search-bar-outer">
-    <div class="search-bar-inner">
-      <form action="/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
-            value="{{keyword}}" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+<div class="container search-bar mt-5">
+  <div class="row">
+    <div class="col-md-10 col-12 mx-auto">
+      <div class="row justify-content-between">
+        <div class="col-4 pr-1">
+          <div class="action-outer">
+            <div class="search-bar-inner">
+              <form action="/search">
+                <p class="mb-2">尋找餐廳：</p>
+                <div class="input-group">
+                  <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類"
+                    aria-label="Restaurant Name..." value="{{keyword}}" aria-describedby="search-button">
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit" id="search-button"><i
+                        class="fas fa-search"></i></button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </form>
+        <div class="col-4 pl-1">
+          <div class="action-outer">
+            <form action="#">
+              <p class="mb-2">篩選：</p>
+              <select class="custom-select">
+                <option selected>Open this select menu</option>
+                <option value="1">A->Z</option>
+                <option value="2">Z->A</option>
+                <option value="3">類別</option>
+                <option value="4">地區</option>
+              </select>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- restaurant list -->
-<a href="./restaurants/new">Create</a>
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
@@ -40,10 +65,10 @@
             </div>
           </div>
           <div class="mb-5" style="text-align: end">
-            <a href="./restaurants/{{ this._id }}/edit" class="btn btn-info stretched-link">edit</a>
-            <a href="./restaurants/{{ this._id }}" class="btn btn-secondary stretched-link">detail</a>
-            <form action="./restaurants/{{ this._id }}/delete" method="POST" style="display: inline;">
-              <button type="submit" class="btn btn-warning">delete</button>
+            <a href="/restaurants/{{ this._id }}/edit" class="btn btn-warning">edit</a>
+            <a href="/restaurants/{{ this._id }}" class="btn btn-info">detail</a>
+            <form action="/restaurants/{{ this._id }}?_method=DELETE" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-danger">delete</button>
             </form>
           </div>
         </a>
