@@ -4,14 +4,10 @@ const router = express.Router()
 const Restaurant = require('../../models/restaurant')
 
 router.get('/', (req, res) => {
-  const keyword = req.query.keyword.trim().toLowerCase()
-  Restaurant.find({})
+  const keyword = req.query.keyword
+  Restaurant.find({ name: { $regex: keyword, $options: 'i' } })
     .lean()
-    .then(restaurantsData => {
-      const restaurants = restaurantsData.filter(data =>
-        data.name.toLowerCase().includes(keyword) || data.category.toLowerCase().includes(keyword))
-      res.render('index', { restaurants, keyword })
-    })
+    .then(restaurantsData => res.render('index', { restaurants: restaurantsData, keyword }))
     .catch(error => console.log(error))
 })
 
