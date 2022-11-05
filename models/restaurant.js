@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const user = require('./user')
 const Schema = mongoose.Schema
 const restaurantSchema = new Schema({
   name: {
@@ -32,6 +33,12 @@ const restaurantSchema = new Schema({
   },
   description: {
     type: String,
+    required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+    index: true,
     required: true
   }
 })
