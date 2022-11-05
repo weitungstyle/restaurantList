@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../../models/user')
 const passport = require('passport')
-
+const bcrypt = require('bcryptjs')
 
 router.get('/login', (req, res) => {
   res.render('login')
@@ -16,15 +16,19 @@ router.post('/login', passport.authenticate('local', {
 router.get('/signup', (req, res) => {
   res.render('signup')
 })
+
 router.post('/signup', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const errors = []
+  //email或密碼未填
   if (!email || !password) {
     errors.push({ message: 'Email address is required.' })
   }
+  //確認密碼不符或未填
   if (password !== confirmPassword) {
     errors.push({ message: 'Please confirm the correction of the password.' })
   }
+  //若有錯誤訊息
   if (errors.length) {
     return res.render('signup', {
       errors,
@@ -46,15 +50,17 @@ router.post('/signup', (req, res) => {
           password,
           confirmPassword
         })
-      } else {
-        User.create({
+      }
+      return bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(password, salt))
+        .then(hash => User.create({
           name,
           email,
-          password
-        })
-          .then(() => res.redirect('/'))
-          .catch(err => console.log(err))
-      }
+          password: hash
+        }))
+        .then(() => res.redirect('/'))
+        .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
 })
