@@ -1,5 +1,6 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
@@ -14,7 +15,7 @@ module.exports = app => {
         if (!user) {
           return done(null, false, { message: 'This email is not registed.' })
         }
-        return bcrypt.compare(user.password, password).then(isMatch => {
+        return bcrypt.compare(password, user.password).then(isMatch => {
           if (!isMatch) {
             return done(null, false, { message: 'Email or password is incorrect.' })
           }
@@ -22,6 +23,30 @@ module.exports = app => {
         })
       })
       .catch(err => done(err, false))
+  }))
+
+  passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET,
+    callbackURL: process.env.FACEBOOK_CALLBACK,
+    profileFields: ['email', 'displayName'] //要求facebook開放的資料
+  }, (accessToken, refreshToken, profile, done) => {
+    const { name, email } = profile._json
+    User.findOne({ email })
+      .then(user => {
+        if (user) return done(null, user)
+        const randomPassword = Math.random().toString(36).slice(-8)
+        bcrypt
+          .genSalt(10)
+          .then(salt => bcrypt(randomPassword, salt))
+          .then(hash => User.create({
+            name,
+            email,
+            password: hash
+          }))
+          .then(user => done(null, user))
+          .catch(err => done(err, false))
+      })
   }))
 
   // serialize & deserialize

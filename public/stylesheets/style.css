@@ -20,12 +20,6 @@ header {
   filter: blur(3px);
 }
 
-.create-btn {
-  position: absolute;
-  top: 8px;
-  right: 21%;
-}
-
 .search-bar .action-outer {
   margin: 0 auto;
   max-width: 680px;

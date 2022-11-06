@@ -2,6 +2,16 @@ const Restaurant = require('../restaurant')
 const restaurantList = require('../../restaurant.json')
 const db = require('../../config/mongoose')
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
+const SEED_USER = {
+  name: 'tester',
+  email: 'tester@ac.com',
+  password: 'password'
+}
+
 db.once('open', () => {
   for (i = 0; i < 8; i++) {
     Restaurant.create({
