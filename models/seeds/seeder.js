@@ -1,30 +1,54 @@
-const Restaurant = require('../restaurant')
-const restaurantList = require('../../restaurant.json')
-const db = require('../../config/mongoose')
-
+const bcrypt = require('bcryptjs')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
-const SEED_USER = {
-  name: 'tester',
-  email: 'tester@ac.com',
-  password: 'password'
-}
+const db = require('../../config/mongoose')
+const Restaurant = require('../restaurant')
+const User = require('../user')
+const restaurantList = require('./restaurant.json').results
+const userList = require('./user.json')
 
 db.once('open', () => {
-  for (i = 0; i < 8; i++) {
-    Restaurant.create({
-      name: restaurantList.results[i].name,
-      name_en: restaurantList.results[i].name,
-      category: restaurantList.results[i].category,
-      image: restaurantList.results[i].image,
-      location: restaurantList.results[i].location,
-      phone: restaurantList.results[i].phone,
-      google_map: restaurantList.results[i].google_map,
-      rating: restaurantList.results[i].rating,
-      description: restaurantList.results[i].description,
+  bcrypt
+    .genSalt(10)
+    .then(salt => bcrypt.hash('password', salt))
+    .then(hash => User.create({
+      name: userList[0].name,
+      email: userList[0].email,
+      password: hash
+    }))
+    .then(user => {
+      const userId = user._id
+      for (i = 0; i < 3; i++) {
+        restaurantList[i].userId = userId
+      }
+      return Promise.all(Array.from(
+        { length: 3 },
+        (_, i) => Restaurant.create(restaurantList[i])
+      ))
     })
-  }
-  console.log('done')
+    .then(() => {
+      bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash('password', salt))
+        .then(hash => User.create({
+          name: userList[1].name,
+          email: userList[1].email,
+          password: hash
+        }))
+        .then(user => {
+          const userId = user._id
+          for (i = 3; i < 6; i++) {
+            restaurantList[i].userId = userId
+          }
+          return Promise.all(Array.from(
+            { length: 3 },
+            (_, i) => Restaurant.create(restaurantList[i + 3])
+          ))
+        })
+        .then(() => {
+          console.log('done')
+          process.exit()
+        })
+    })
 })
