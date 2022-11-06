@@ -11,7 +11,7 @@ const userList = require('./user.json')
 db.once('open', () => {
   bcrypt
     .genSalt(10)
-    .then(salt => bcrypt.hash('password', salt))
+    .then(salt => bcrypt.hash(userList[0].password, salt))
     .then(hash => User.create({
       name: userList[0].name,
       email: userList[0].email,
@@ -30,7 +30,7 @@ db.once('open', () => {
     .then(() => {
       bcrypt
         .genSalt(10)
-        .then(salt => bcrypt.hash('password', salt))
+        .then(salt => bcrypt.hash(userList[1].password, salt))
         .then(hash => User.create({
           name: userList[1].name,
           email: userList[1].email,
